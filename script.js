@@ -1,4 +1,4 @@
-const WORKER_URL = "";
+const WORKER_URL = "/api/chat";
 const STORAGE_KEY = "loreal-routine-selected-products";
 
 const categoryFilter = document.getElementById("categoryFilter");

@@ -1,0 +1,10 @@
+.git
+.github
+.devcontainer
+.gitignore
+.assetsignore
+AGENTS.md
+README.md
+worker.mjs
+wrangler.jsonc
+node_modules
