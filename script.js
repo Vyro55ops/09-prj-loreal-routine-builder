@@ -234,7 +234,18 @@ async function askWorker(conversation) {
     body: JSON.stringify({ messages: conversation }),
   });
 
-  const data = await response.json();
+  // Read the reply as text first, so we can show a clear error if it isn't JSON
+  // (for example, an HTML error page from the wrong address)
+  const responseText = await response.text();
+  let data;
+  try {
+    data = JSON.parse(responseText);
+  } catch (error) {
+    throw new Error(
+      `The server at ${WORKER_URL} sent back a web page instead of an answer (HTTP ${response.status}).`
+    );
+  }
+
   if (!response.ok) {
     throw new Error(
       data?.error?.message ||
