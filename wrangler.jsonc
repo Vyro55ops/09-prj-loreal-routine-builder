@@ -2,6 +2,7 @@
   "name": "09-prj-loreal-routine-builder",
   "main": "worker.mjs",
   "compatibility_date": "2026-11-18",
+  "keep_vars": true,
   "assets": {
     "directory": ".",
     "run_worker_first": ["/api/*"]

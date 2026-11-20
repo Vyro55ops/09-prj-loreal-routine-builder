@@ -166,7 +166,15 @@ export default {
       );
     }
 
-    const answer = result.output_text;
+    const answer =
+      typeof result.output_text === "string"
+        ? result.output_text
+        : (result.output || [])
+            .filter((item) => item.type === "message")
+            .flatMap((item) => item.content || [])
+            .filter((part) => part.type === "output_text" && typeof part.text === "string")
+            .map((part) => part.text)
+            .join("");
     if (typeof answer !== "string" || !answer.trim()) {
       return jsonResponse(
         { error: { message: "The AI service returned no answer. Please try again." } },
