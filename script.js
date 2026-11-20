@@ -261,17 +261,41 @@ async function askWorker(conversation) {
   return reply;
 }
 
+// Shows a "typing" bubble with three bouncing dots while the AI is thinking
+function showThinkingBubble() {
+  const bubble = document.createElement("div");
+  bubble.className = "chat-message assistant thinking";
+  bubble.id = "thinkingBubble";
+  bubble.innerHTML = `
+    <span class="message-label">BEAUTY ADVISOR</span>
+    <span class="typing-dots" role="status" aria-label="Your beauty advisor is thinking">
+      <span></span><span></span><span></span>
+    </span>
+  `;
+  chatWindow.append(bubble);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+// Removes the "typing" bubble once the answer (or an error) arrives
+function hideThinkingBubble() {
+  const bubble = document.getElementById("thinkingBubble");
+  if (bubble) bubble.remove();
+}
+
 async function sendConversation() {
   setBusy(true);
   setStatus("");
+  showThinkingBubble();
 
   try {
     const reply = await askWorker(messages);
+    hideThinkingBubble();
     messages.push({ role: "assistant", content: reply });
     routineGenerated = true;
     appendMessage("assistant", reply);
     userInput.value = "";
   } catch (error) {
+    hideThinkingBubble();
     setStatus(error.message);
     appendMessage("assistant", `I couldn't reach your beauty advisor. ${error.message}`);
     messages.pop();
