@@ -172,11 +172,38 @@ function appendMessage(role, text) {
 
   const content = document.createElement("p");
   content.className = "message-content";
-  addTextAndLinks(content, text);
+  addFormattedText(content, text);
 
   messageElement.append(label, content);
   chatWindow.append(messageElement);
   chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+// Goes through the AI's reply one line at a time.
+// Lines that start with # (like "### Morning") are Markdown headings,
+// so we show them as headings instead of showing the # symbols.
+function addFormattedText(container, text) {
+  const lines = text.split("\n");
+
+  lines.forEach((line, index) => {
+    const headingMatch = line.match(/^\s*#{1,6}\s+(.*)$/);
+
+    if (headingMatch) {
+      // Heading line: put the words (without the #'s) in a heading span
+      const heading = document.createElement("span");
+      heading.className = "message-heading";
+      addTextAndLinks(heading, headingMatch[1]);
+      container.append(heading);
+    } else {
+      // Normal line: add it with bold text and links handled
+      addTextAndLinks(container, line);
+    }
+
+    // Put the line break back (except after the very last line)
+    if (index < lines.length - 1) {
+      container.append(document.createTextNode("\n"));
+    }
+  });
 }
 
 // Turns the AI's text into safe page content:

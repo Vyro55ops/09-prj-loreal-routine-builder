@@ -465,6 +465,14 @@ a:focus-visible {
   background: var(--soft-rose);
 }
 
+/* Headings inside AI replies (from "### Heading" lines) */
+.message-heading {
+  color: var(--ink);
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 /* "Typing" bubble shown while the AI is thinking */
 .chat-message.thinking {
   align-self: flex-start;
