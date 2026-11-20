@@ -1,4 +1,5 @@
-const WORKER_URL = "/api/chat";
+// Full Cloudflare Worker address, so the chat works from GitHub Pages too
+const WORKER_URL = "https://09-prj-loreal-routine-builder.shahvir1.workers.dev/api/chat";
 const STORAGE_KEY = "loreal-routine-selected-products";
 
 const categoryFilter = document.getElementById("categoryFilter");

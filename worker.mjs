@@ -19,7 +19,11 @@ function jsonResponse(body, status, origin) {
 
 function getAllowedOrigin(request, env) {
   const requestOrigin = request.headers.get("Origin");
-  return requestOrigin && requestOrigin === env.ALLOWED_ORIGIN
+  // ALLOWED_ORIGIN can list several sites, separated by commas
+  const allowedOrigins = (env.ALLOWED_ORIGIN || "")
+    .split(",")
+    .map((origin) => origin.trim());
+  return requestOrigin && allowedOrigins.includes(requestOrigin)
     ? requestOrigin
     : null;
 }

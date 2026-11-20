@@ -8,6 +8,6 @@
     "run_worker_first": ["/api/*"]
   },
   "vars": {
-    "ALLOWED_ORIGIN": "https://09-prj-loreal-routine-builder.shahvir1.workers.dev"
+    "ALLOWED_ORIGIN": "https://09-prj-loreal-routine-builder.shahvir1.workers.dev,https://vyro55ops.github.io"
   }
 }
