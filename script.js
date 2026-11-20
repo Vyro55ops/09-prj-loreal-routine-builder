@@ -179,14 +179,29 @@ function appendMessage(role, text) {
   chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
+// Turns the AI's text into safe page content:
+// [label](url) and plain https:// links become clickable links,
+// and **text** becomes bold text (instead of showing the asterisks)
 function addTextAndLinks(container, text) {
-  const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)|(https?:\/\/[^\s<>]+)/g;
+  const linkPattern =
+    /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)|(https?:\/\/[^\s<>()]+)|\*\*([^*]+)\*\*/g;
   let lastIndex = 0;
   let match;
 
   while ((match = linkPattern.exec(text)) !== null) {
+    // Add any normal text that came before this match
     container.append(document.createTextNode(text.slice(lastIndex, match.index)));
 
+    // If the match is **bold text**, wrap it in a <strong> tag
+    if (match[4]) {
+      const bold = document.createElement("strong");
+      bold.textContent = match[4];
+      container.append(bold);
+      lastIndex = linkPattern.lastIndex;
+      continue;
+    }
+
+    // Otherwise the match is a link
     const url = match[2] || match[3];
     const label = match[1] || url;
     const link = document.createElement("a");
